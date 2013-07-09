@@ -1,4 +1,4 @@
-package com.joeykrim.keytimer;
+package com.joeykrim.pbekeytester;
 
 import android.app.*;
 import android.os.*;
