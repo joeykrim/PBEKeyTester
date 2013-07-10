@@ -21,24 +21,24 @@ public class MainActivity extends Activity
 
 		String LOG_TAG = "TestIterations";
 
-//set generic password
+		//set generic password
 		String passphrase = "thisisatest"; //10 characters long
 
-//set goal time in ms
+		//set goal time in ms
 		long goalTime = 500L;
 
-//set iteration increment step
+		//set iteration increment step
 		int iterationStep = 100; //need to determine best increment step
 
-//initialize iteration starting point
+		//initialize iteration starting point
 		int currentIterationCount = 0;
 
-//initialize previous iteration elapsed time
+		//initialize previous iteration elapsed time
 		long previousIterationElapsedTime = 0L;
 
-//generate salt
-//https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L233
-//notes, this changed in android 4+? to SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+		//generate salt
+		//https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L233
+		//notes, this changed in android 4+? to SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "Crypto");
 		try {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			byte[] salt = new byte[16];//textsecure uses 8, NIST recommends minimum 16
