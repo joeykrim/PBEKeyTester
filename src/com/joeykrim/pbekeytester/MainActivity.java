@@ -20,7 +20,7 @@ public class MainActivity extends Activity
 
         String LOG_TAG = "TestIterations";
 
-        int targetIterationCount, targetIterationTime, previousIterationCount, previousIterationTime = 0;
+        long targetIterationCount = 0L, targetIterationTime = 0L, previousIterationCount = 0L, previousIterationTime = 0L;
 
         //set generic password
         String passphrase = "thisisatest"; //10 characters long
