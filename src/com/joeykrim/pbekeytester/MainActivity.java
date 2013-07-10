@@ -14,65 +14,73 @@ public class MainActivity extends Activity
 {
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-	{
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-		String LOG_TAG = "TestIterations";
+        String LOG_TAG = "TestIterations";
 
-		//set generic password
-		String passphrase = "thisisatest"; //10 characters long
+        int targetIterationCount, targetIterationTime, previousIterationCount, previousIterationTime = 0;
 
-		//set goal time in ms
-		long goalTime = 500L;
+        //set generic password
+        String passphrase = "thisisatest"; //10 characters long
 
-		//set iteration increment step
-		int iterationStep = 100; //need to determine best increment step
+        //set goal time in ms
+        long goalTime = 500L;
 
-		//initialize iteration starting point
-		int currentIterationCount = 0;
+        //set iteration increment step
+        int iterationStep = 100; //need to determine best increment step
 
-		//initialize previous iteration elapsed time
-		long previousIterationElapsedTime = 0L;
+        //initialize iteration starting point
+        int currentIterationCount = 0;
 
-		//generate salt
-		//https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L233
-		//notes, this changed in android 4+? to SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "Crypto");
-		try {
-			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-			byte[] salt = new byte[16];//textsecure uses 8, NIST recommends minimum 16
-			random.nextBytes(salt);
+        //initialize previous iteration elapsed time
+        long previousIterationElapsedTime = 0L;
 
-			while(true) {
-				currentIterationCount += iterationStep;
+        //generate salt
+        //https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L233
+        //notes, this changed in android 4+? to SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+        try {
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            byte[] salt = new byte[16];//textsecure uses 8, NIST recommends minimum 16
+            random.nextBytes(salt);
 
-				//int startTime = System.currentTimeMillis();
-				long startTime = SystemClock.elapsedRealtime();
+            while(true) {
+                currentIterationCount += iterationStep;
 
-				//https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L241
-				PBEKeySpec keyspec = new PBEKeySpec(passphrase.toCharArray(), salt, currentIterationCount);
-				SecretKeyFactory skf = SecretKeyFactory.getInstance("PBEWITHSHA1AND128BITAES-CBC-BC");
-				SecretKey sk = skf.generateSecret(keyspec);
+                //int startTime = System.currentTimeMillis();
+                long startTime = SystemClock.elapsedRealtime();
 
-				//int finishTime = System.currentTimeMillis();
-				long finishTime = SystemClock.elapsedRealtime();
+                //https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L241
+                PBEKeySpec keyspec = new PBEKeySpec(passphrase.toCharArray(), salt, currentIterationCount);
+                SecretKeyFactory skf = SecretKeyFactory.getInstance("PBEWITHSHA1AND128BITAES-CBC-BC");
+                SecretKey sk = skf.generateSecret(keyspec);
 
-				if (finishTime-startTime > goalTime) {
-					Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " exceeds the goalTime of: " + goalTime + "ms by " + (finishTime-startTime) + "ms");
-					Log.d(LOG_TAG, "The previous iteration count was: " + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
-					break;
-				} else {
-					Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-(finishTime-startTime))  + "ms more to reach the goalTime of: " + goalTime + "ms");
-					previousIterationElapsedTime = finishTime-startTime;
-				}
-			}
-		} catch (NoSuchAlgorithmException e) {
-			Log.e(LOG_TAG, "NoSuchAlgorithmException: " + e.toString());
-		} catch (InvalidKeySpecException e) {
-			Log.e(LOG_TAG, "InvalidKeySpecException: " + e.toString());
-		}
+                //int finishTime = System.currentTimeMillis();
+                long finishTime = SystemClock.elapsedRealtime();
 
-
+                if (finishTime-startTime > goalTime) {
+                    Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " exceeds the goalTime of: " + goalTime + "ms by " + (finishTime-startTime) + "ms");
+                    Log.d(LOG_TAG, "The previous iteration count was: " + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
+                    targetIterationCount = currentIterationCount;
+                    targetIterationTime = finishTime-startTime;
+                    previousIterationCount = currentIterationCount - iterationStep;
+                    previousIterationTime = previousIterationElapsedTime;
+                    break;
+                } else {
+                    Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-(finishTime-startTime))  + "ms more to reach the goalTime of: " + goalTime + "ms");
+                    previousIterationElapsedTime = finishTime-startTime;
+                }
+            }
+	} catch (NoSuchAlgorithmException e) {
+	    Log.e(LOG_TAG, "NoSuchAlgorithmException: " + e.toString());
+        } catch (InvalidKeySpecException e) {
+            Log.e(LOG_TAG, "InvalidKeySpecException: " + e.toString());
+        }
+        ((TextView) findViewById(R.id.resultsText)).setText("Target Iteration Count: " + targetIterationCount
+            + System.getProperty("line.separator") + "Target Iteration Duration: " + targetIterationTime
+            + System.getProperty("line.separator") + System.getProperty("line.separator")
+            + "Prior Iteration Count: " + previousIterationCount + System.getProperty("line.separator")
+            + "Prior Iteration Duration: " + previousIterationTime);
     }
 }
