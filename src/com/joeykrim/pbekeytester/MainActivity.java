@@ -78,9 +78,9 @@ public class MainActivity extends Activity
             Log.e(LOG_TAG, "InvalidKeySpecException: " + e.toString());
         }
         ((TextView) findViewById(R.id.resultsText)).setText("Target Iteration Count: " + targetIterationCount
-            + System.getProperty("line.separator") + "Target Iteration Duration: " + targetIterationTime
+            + System.getProperty("line.separator") + "Target Iteration Duration: " + targetIterationTime + "ms"
             + System.getProperty("line.separator") + System.getProperty("line.separator")
             + "Prior Iteration Count: " + previousIterationCount + System.getProperty("line.separator")
-            + "Prior Iteration Duration: " + previousIterationTime);
+            + "Prior Iteration Duration: " + previousIterationTime + "ms");
     }
 }
