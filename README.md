@@ -21,3 +21,10 @@ Round 3
 Round 4
 16800 - 551ms
 16700 - 451ms
+
+
+Great examples of proper implementations:
+https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java
+
+https://github.com/nelenkov/android-pbe/blob/master/src/org/nick/androidpbe/MainActivity.java
+http://nelenkov.blogspot.com/2012/04/using-password-based-encryption-on.html
