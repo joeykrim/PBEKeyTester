@@ -81,7 +81,8 @@ public class MainActivity extends Activity
             Log.e(LOG_TAG, "InvalidKeySpecException: " + e.toString());
         }
         ((TextView) findViewById(R.id.resultsText)).setText("The below results are using the algorithm: " + algorithName
-            + " with passphrase: " + passphrase + System.getProperty("line.separator") + "Target Iteration Count: " + targetIterationCount
+            + " with passphrase: " + passphrase + System.getProperty("line.separator") + 
+            + System.getProperty("line.separator") + "Target Iteration Count: " + targetIterationCount
             + System.getProperty("line.separator") + "Target Iteration Duration: " + targetIterationTime + "ms"
             + System.getProperty("line.separator") + System.getProperty("line.separator")
             + "Prior Iteration Count: " + previousIterationCount + System.getProperty("line.separator")
