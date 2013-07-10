@@ -22,6 +22,9 @@ public class MainActivity extends Activity
 
         long targetIterationCount = 0L, targetIterationTime = 0L, previousIterationCount = 0L, previousIterationTime = 0L;
 
+        //set algorithm name
+        String algorithName = "PBEWITHSHA1AND128BITAES-CBC-BC";
+
         //set generic password
         String passphrase = "thisisatest"; //10 characters long
 
@@ -53,7 +56,7 @@ public class MainActivity extends Activity
 
                 //https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L241
                 PBEKeySpec keyspec = new PBEKeySpec(passphrase.toCharArray(), salt, currentIterationCount);
-                SecretKeyFactory skf = SecretKeyFactory.getInstance("PBEWITHSHA1AND128BITAES-CBC-BC");
+                SecretKeyFactory skf = SecretKeyFactory.getInstance(algorithName);
                 SecretKey sk = skf.generateSecret(keyspec);
 
                 //int finishTime = System.currentTimeMillis();
@@ -77,7 +80,8 @@ public class MainActivity extends Activity
         } catch (InvalidKeySpecException e) {
             Log.e(LOG_TAG, "InvalidKeySpecException: " + e.toString());
         }
-        ((TextView) findViewById(R.id.resultsText)).setText("Target Iteration Count: " + targetIterationCount
+        ((TextView) findViewById(R.id.resultsText)).setText("The below results are using the algorithm: " + algorithName
+            + " with passphrase: " + passphrase + System.getProperty("line.separator") + "Target Iteration Count: " + targetIterationCount
             + System.getProperty("line.separator") + "Target Iteration Duration: " + targetIterationTime + "ms"
             + System.getProperty("line.separator") + System.getProperty("line.separator")
             + "Prior Iteration Count: " + previousIterationCount + System.getProperty("line.separator")
