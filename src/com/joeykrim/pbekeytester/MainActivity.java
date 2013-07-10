@@ -63,7 +63,7 @@ public class MainActivity extends Activity
 					Log.d(LOG_TAG, "The previous iteration count was: " + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
 					break;
 				} else {
-					Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-(finishTime-startTime))  + "ms more to reach the goalTime of: " + goalTime);
+					Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-(finishTime-startTime))  + "ms more to reach the goalTime of: " + goalTime + "ms");
 					previousIterationElapsedTime = finishTime-startTime;
 				}
 			}
