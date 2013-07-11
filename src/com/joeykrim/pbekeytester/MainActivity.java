@@ -14,14 +14,14 @@ import android.support.v4.util.*;
 
 public class MainActivity extends Activity {
 
-	String LOG_TAG = "TestIterations";
+    String LOG_TAG = "TestIterations";
 
-	long targetIterationCount = 0L, targetIterationTime = 0L, previousIterationCount = 0L, previousIterationTime = 0L;
+    long targetIterationCount = 0L, targetIterationTime = 0L, previousIterationCount = 0L, previousIterationTime = 0L;
 
-	//set algorithm name
-	String algorithName = "PBEWITHSHA1AND128BITAES-CBC-BC";
+    //set algorithm name
+    String algorithName = "PBEWITHSHA1AND128BITAES-CBC-BC";
 
-	//set generic password
+    //set generic password
 	String passphrase = "thisisatest"; //10 characters long
 
 	//set goal time in ms
@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
 		SecretKey sk = null;
         try {
             PBEKeySpec keyspec = new PBEKeySpec(passphrase.toCharArray(), salt, currentIterationCount);
-				SecretKeyFactory skf = SecretKeyFactory.getInstance(algorithName);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance(algorithName);
             sk = skf.generateSecret(keyspec);
         } catch (InvalidKeySpecException e) {
             Log.e(LOG_TAG, "InvalidKeySpecException: " + e.toString());
