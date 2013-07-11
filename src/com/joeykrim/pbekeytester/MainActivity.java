@@ -15,8 +15,9 @@ import android.support.v4.util.*;
 public class MainActivity extends Activity {
 
     String LOG_TAG = "TestIterations";
-
-    long targetIterationCount = 0L, targetIterationTime = 0L, previousIterationCount = 0L, previousIterationTime = 0L;
+	
+	//initialize previous iteration count, time and elapsed time
+    long previousIterationCount = 0L, previousIterationTime = 0L, previousIterationElapsedTime = 0L;
 
     //set algorithm name
     String algorithName = "PBEWITHSHA1AND128BITAES-CBC-BC";
@@ -32,9 +33,6 @@ public class MainActivity extends Activity {
 
     //initialize iteration starting point
     int currentIterationCount = 0;
-
-    //initialize previous iteration elapsed time
-    long previousIterationElapsedTime = 0L;
 
     /** Called when the activity is first created. */
     @Override
