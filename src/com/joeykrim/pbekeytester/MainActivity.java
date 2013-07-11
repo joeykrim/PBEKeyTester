@@ -12,8 +12,7 @@ import android.util.*;
 import java.util.*;
 import android.support.v4.util.*;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
 
 	String LOG_TAG = "TestIterations";
 
@@ -53,37 +52,37 @@ public class MainActivity extends Activity
 
         ArrayList<Long> results = new ArrayList<Long>();
 
-            while(true) {
-                currentIterationCount += iterationStep;
+        while(true) {
+            currentIterationCount += iterationStep;
 
-                //int startTime = System.currentTimeMillis();
-                long startTime = SystemClock.elapsedRealtime();
+            //int startTime = System.currentTimeMillis();
+            long startTime = SystemClock.elapsedRealtime();
 
-                SecretKey sk = generateKey(passphrase, generateSalt(), currentIterationCount, algorithName);
+            SecretKey sk = generateKey(passphrase, generateSalt(), currentIterationCount, algorithName);
 
-                //int finishTime = System.currentTimeMillis();
-                long finishTime = SystemClock.elapsedRealtime();
+            //int finishTime = System.currentTimeMillis();
+            long finishTime = SystemClock.elapsedRealtime();
 
-                long elapsedTime = finishTime-startTime;
+            long elapsedTime = finishTime-startTime;
 
-                if (elapsedTime > goalTime) {
-                    Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " exceeds the goalTime of: " + goalTime + "ms by " + elapsedTime + "ms");
-                    Log.d(LOG_TAG, "The previous iteration count was: " + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
-                    //targetIterationCount = currentIterationCount;
-                    //targetIterationTime = elapsedTime;
-                    //previousIterationCount = currentIterationCount - iterationStep;
-                    //previousIterationTime = previousIterationElapsedTime;
-                    results.add( (long) currentIterationCount); //targetIterationCount
-                    results.add(elapsedTime); //targetIterationTime
-                    results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
-                    results.add(previousIterationElapsedTime); //previousIterationTime
-                    //break;
-                    return results;
-                } else {
-                    Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-elapsedTime) + "ms more to reach the goalTime of: " + goalTime + "ms");
-                    previousIterationElapsedTime = elapsedTime;
-                }
+            if (elapsedTime > goalTime) {
+                Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " exceeds the goalTime of: " + goalTime + "ms by " + elapsedTime + "ms");
+                Log.d(LOG_TAG, "The previous iteration count was: " + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
+                //targetIterationCount = currentIterationCount;
+                //targetIterationTime = elapsedTime;
+                //previousIterationCount = currentIterationCount - iterationStep;
+                //previousIterationTime = previousIterationElapsedTime;
+                results.add( (long) currentIterationCount); //targetIterationCount
+                results.add(elapsedTime); //targetIterationTime
+                results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
+                results.add(previousIterationElapsedTime); //previousIterationTime
+                //break;
+                return results;
+            } else {
+                Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-elapsedTime) + "ms more to reach the goalTime of: " + goalTime + "ms");
+                previousIterationElapsedTime = elapsedTime;
             }
+        }
     }
 
 
@@ -134,4 +133,4 @@ public class MainActivity extends Activity
         }
     }
 	
-	}
+}
