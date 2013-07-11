@@ -22,19 +22,19 @@ public class MainActivity extends Activity {
     String algorithName = "PBEWITHSHA1AND128BITAES-CBC-BC";
 
     //set generic password
-	String passphrase = "thisisatest"; //10 characters long
+    String passphrase = "thisisatest"; //10 characters long
 
-	//set goal time in ms
-	long goalTime = 500L;
+    //set goal time in ms
+    long goalTime = 500L;
 
-	//set iteration increment step
-	int iterationStep = 100; //need to determine best increment step
+    //set iteration increment step
+    int iterationStep = 100; //need to determine best increment step
 
-	//initialize iteration starting point
-	int currentIterationCount = 0;
+    //initialize iteration starting point
+    int currentIterationCount = 0;
 
-	//initialize previous iteration elapsed time
-	long previousIterationElapsedTime = 0L;
+    //initialize previous iteration elapsed time
+    long previousIterationElapsedTime = 0L;
 
     /** Called when the activity is first created. */
     @Override
@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         ((TextView) findViewById(R.id.resultsText)).setText("Solving...");
 
         backgroundIterationCount bTask = new backgroundIterationCount();
-		bTask.execute();
+        bTask.execute();
     }
 
     public ArrayList<Long> solveTargetIteractionCount() {
@@ -66,12 +66,11 @@ public class MainActivity extends Activity {
             long elapsedTime = finishTime-startTime;
 
             if (elapsedTime > goalTime) {
-                Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " exceeds the goalTime of: " + goalTime + "ms by " + elapsedTime + "ms");
-                Log.d(LOG_TAG, "The previous iteration count was: " + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
-                //targetIterationCount = currentIterationCount;
-                //targetIterationTime = elapsedTime;
-                //previousIterationCount = currentIterationCount - iterationStep;
-                //previousIterationTime = previousIterationElapsedTime;
+                Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount
+                    + " exceeds the goalTime of: " + goalTime + "ms by " + elapsedTime + "ms");
+                Log.d(LOG_TAG, "The previous iteration count was: "
+                    + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
+
                 results.add( (long) currentIterationCount); //targetIterationCount
                 results.add(elapsedTime); //targetIterationTime
                 results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
@@ -89,30 +88,30 @@ public class MainActivity extends Activity {
     //https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L233
     //notes, this changed in android 4+? to SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "Crypto");
     public byte[] generateSalt() {
-		byte[] salt = new byte[16];
+        byte[] salt = new byte[16];
         try {
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             //textsecure uses 8, NIST recommends minimum 16
             random.nextBytes(salt);
         } catch (NoSuchAlgorithmException e) {
-			Log.e(LOG_TAG, "NoSuchAlgorithmException: " + e.toString());
+            Log.e(LOG_TAG, "NoSuchAlgorithmException: " + e.toString());
         }
-		return salt;
+        return salt;
     }
 
     //https://github.com/WhisperSystems/TextSecure/blob/master/src/org/thoughtcrime/securesms/crypto/MasterSecretUtil.java#L241
     public SecretKey generateKey(String passphrase, byte[] salt, int currentIterationCount, String algorithName) {
-		SecretKey sk = null;
+        SecretKey sk = null;
         try {
             PBEKeySpec keyspec = new PBEKeySpec(passphrase.toCharArray(), salt, currentIterationCount);
             SecretKeyFactory skf = SecretKeyFactory.getInstance(algorithName);
             sk = skf.generateSecret(keyspec);
         } catch (InvalidKeySpecException e) {
             Log.e(LOG_TAG, "InvalidKeySpecException: " + e.toString());
-        } catch (NoSuchAlgorithmException e){
-			
-		}
-		return sk;
+        } catch (NoSuchAlgorithmException e2){
+            Log.e(LOG_TAG, "NoSuchAlgorithmException: " + e2.toString());
+        }
+        return sk;
     }
 
     public class backgroundIterationCount extends AsyncTask<Void, Void, ArrayList<Long>> {
@@ -122,13 +121,13 @@ public class MainActivity extends Activity {
 
         @Override protected void onPostExecute(ArrayList<Long> results) {
             if (!isCancelled()) {
-                ((TextView) findViewById(R.id.resultsText)).setText("The below results are using the algorithm: " + algorithName
-																	+ " with passphrase: " + passphrase + System.getProperty("line.separator")
-																	+ System.getProperty("line.separator") + "Target Iteration Count: " + results.get(0)
-																	+ System.getProperty("line.separator") + "Target Iteration Duration: " + results.get(1) + "ms"
-																	+ System.getProperty("line.separator") + System.getProperty("line.separator")
-																	+ "Prior Iteration Count: " + results.get(2) + System.getProperty("line.separator")
-																	+ "Prior Iteration Duration: " + results.get(3) + "ms");
+                ((TextView) findViewById(R.id.resultsText)).setText("The below results are using the algorithm: "+ algorithName
+                    + " with passphrase: " + passphrase + System.getProperty("line.separator")
+                    + System.getProperty("line.separator") + "Target Iteration Count: " + results.get(0)
+                    + System.getProperty("line.separator") + "Target Iteration Duration: " + results.get(1) + "ms"
+                    + System.getProperty("line.separator") + System.getProperty("line.separator")
+                    + "Prior Iteration Count: " + results.get(2) + System.getProperty("line.separator")
+                    + "Prior Iteration Duration: " + results.get(3) + "ms");
             }
         }
     }
