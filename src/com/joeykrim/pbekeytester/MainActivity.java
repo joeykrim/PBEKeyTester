@@ -50,6 +50,8 @@ public class MainActivity extends Activity {
 
         ArrayList<Long> results = new ArrayList<Long>();
 
+        long overallStartTime = SystemClock.elapsedRealtime();
+
         while(true) {
             currentIterationCount += iterationStep;
 
@@ -73,11 +75,14 @@ public class MainActivity extends Activity {
                 results.add(elapsedTime); //targetIterationTime
                 results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
                 results.add(previousIterationElapsedTime); //previousIterationTime
+				results.add(finishTime - overallStartTime); //overall time consumed
                 //break;
                 return results;
             } else {
                 Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-elapsedTime) + "ms more to reach the goalTime of: " + goalTime + "ms");
                 previousIterationElapsedTime = elapsedTime;
+				if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
+				else iterationStep = 800;
             }
         }
     }
@@ -121,6 +126,7 @@ public class MainActivity extends Activity {
             if (!isCancelled()) {
                 ((TextView) findViewById(R.id.resultsText)).setText("The below results are using the algorithm: "+ algorithName
                     + " with passphrase: " + passphrase + System.getProperty("line.separator")
+                    + System.getProperty("line.separator") + "Overall time required: " + results.get(4) + "ms"
                     + System.getProperty("line.separator") + "Target Iteration Count: " + results.get(0)
                     + System.getProperty("line.separator") + "Target Iteration Duration: " + results.get(1) + "ms"
                     + System.getProperty("line.separator") + System.getProperty("line.separator")
