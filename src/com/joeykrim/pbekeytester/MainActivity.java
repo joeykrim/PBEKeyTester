@@ -73,7 +73,8 @@ public class MainActivity extends Activity {
                     + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
 
                 //Output key
-                Log.d(LOG_TAG, "Final secretkey: " + new BigInteger(1, sk.getEncoded()).toString(16));
+                //http://stackoverflow.com/a/7176483
+                Log.d(LOG_TAG, "Final SecretKey: " + new BigInteger(1, sk.getEncoded()).toString(16));
 
                 results.add( (long) currentIterationCount); //targetIterationCount
                 results.add(elapsedTime); //targetIterationTime
@@ -85,8 +86,8 @@ public class MainActivity extends Activity {
             } else {
                 Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-elapsedTime) + "ms more to reach the goalTime of: " + goalTime + "ms");
                 previousIterationElapsedTime = elapsedTime;
-				if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
-				else iterationStep = 700;
+                if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
+                else iterationStep = 700;
             }
         }
     }
