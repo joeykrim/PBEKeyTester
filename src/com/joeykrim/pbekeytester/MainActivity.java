@@ -11,6 +11,7 @@ import java.security.spec.*;
 import android.util.*;
 import java.util.*;
 import android.support.v4.util.*;
+import java.math.*;
 
 public class MainActivity extends Activity {
 
@@ -71,6 +72,9 @@ public class MainActivity extends Activity {
                 Log.d(LOG_TAG, "The previous iteration count was: "
                     + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
 
+                //Output key
+                Log.d(LOG_TAG, "Final secretkey: " + new BigInteger(1, sk.getEncoded()).toString(16));
+
                 results.add( (long) currentIterationCount); //targetIterationCount
                 results.add(elapsedTime); //targetIterationTime
                 results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
@@ -82,7 +86,7 @@ public class MainActivity extends Activity {
                 Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-elapsedTime) + "ms more to reach the goalTime of: " + goalTime + "ms");
                 previousIterationElapsedTime = elapsedTime;
 				if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
-				else iterationStep = 800;
+				else iterationStep = 700;
             }
         }
     }
