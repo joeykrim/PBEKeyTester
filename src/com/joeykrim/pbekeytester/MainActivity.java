@@ -76,11 +76,11 @@ public class MainActivity extends Activity {
                 //http://stackoverflow.com/a/7176483
                 Log.d(LOG_TAG, "Final SecretKey: " + new BigInteger(1, sk.getEncoded()).toString(16));
 
+                results.add(finishTime - overallStartTime); //overall time consumed
                 results.add( (long) currentIterationCount); //targetIterationCount
                 results.add(elapsedTime); //targetIterationTime
                 results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
                 results.add(previousIterationElapsedTime); //previousIterationTime
-				results.add(finishTime - overallStartTime); //overall time consumed
                 //break;
                 return results;
             } else {
@@ -131,12 +131,12 @@ public class MainActivity extends Activity {
             if (!isCancelled()) {
                 ((TextView) findViewById(R.id.resultsText)).setText("The below results are using the algorithm: "+ algorithName
                     + " with passphrase: " + passphrase + System.getProperty("line.separator")
-                    + System.getProperty("line.separator") + "Overall time required: " + results.get(4) + "ms"
-                    + System.getProperty("line.separator") + "Target Iteration Count: " + results.get(0)
-                    + System.getProperty("line.separator") + "Target Iteration Duration: " + results.get(1) + "ms"
+                    + System.getProperty("line.separator") + "Overall time required: " + results.get(0) + "ms"
+                    + System.getProperty("line.separator") + "Target Iteration Count: " + results.get(1)
+                    + System.getProperty("line.separator") + "Target Iteration Duration: " + results.get(2) + "ms"
                     + System.getProperty("line.separator") + System.getProperty("line.separator")
-                    + "Prior Iteration Count: " + results.get(2) + System.getProperty("line.separator")
-                    + "Prior Iteration Duration: " + results.get(3) + "ms");
+                    + "Prior Iteration Count: " + results.get(3) + System.getProperty("line.separator")
+                    + "Prior Iteration Duration: " + results.get(4) + "ms");
             }
         }
     }
