@@ -27,9 +27,9 @@ public class MainActivity extends Activity {
     long goalTime = 500L;
     
     //use range for goal time
-    //target 500ms using range +-20%
-    long targetGoalMinimum = 450L;//goalTime*(long)0.8;
-    long targetGoalMaximum = 550L;//goalTime*(long)1.2;
+    //target 500ms using range +-10%
+    long targetGoalMinimum = (long) (goalTime*0.9);//450L;
+    long targetGoalMaximum = (long) (goalTime*1.1);//550L;
 
     //initialize iteration starting point and increment ranges
     int keyIterationLocationStart = 10000;
@@ -75,50 +75,50 @@ public class MainActivity extends Activity {
             if ((currentIteration == 1 || currentIteration == 2) && elapsedTime < (targetGoalMinimum/2)) {
                 //increase iteration count by larger increment
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is less than half the targetGoalMinimum by " + ((targetGoalMinimum/2)-elapsedTime)
+                    + " took " + elapsedTime + "ms which is less than half the targetGoalMinimum by " + ((targetGoalMinimum/2)-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
                 keyIterationPrevious = keyIterationCurrent;
                 keyIterationCurrent += keyLargeIterationIncrement;
             } else if (elapsedTime < ((targetGoalMinimum/4)*3)) {
                 //increase iteration count by medium increment
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is less than three fourths the targetGoalMinimum by " + (((targetGoalMinimum/4)*3)-elapsedTime)
+                    + " took " + elapsedTime + "ms which is less than three fourths the targetGoalMinimum by " + (((targetGoalMinimum/4)*3)-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
                 keyIterationPrevious = keyIterationCurrent;
-		keyIterationCurrent += keyMediumIterationIncrement;
+                keyIterationCurrent += keyMediumIterationIncrement;
             } else if (elapsedTime < targetGoalMinimum) {
                 //increase iteration count by smaller increment
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
+                    + " took " + elapsedTime + "ms which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
                 keyIterationPrevious = keyIterationCurrent;
-		keyIterationCurrent += keySmallIterationIncrement;
+                keyIterationCurrent += keySmallIterationIncrement;
             } else if (elapsedTime > (targetGoalMaximum*2)) {
                 //decrease iteration count by larger amount
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is greater than the targetGoalMaximum by " + (targetGoalMaximum*2-elapsedTime)
+                    + " took " + elapsedTime + "ms which is greater than the targetGoalMaximum by " + (targetGoalMaximum*2-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
                 keyIterationPrevious = keyIterationCurrent;
                 keyIterationCurrent -= keyLargeIterationIncrement;
             } else if (elapsedTime > (targetGoalMaximum + (targetGoalMaximum/4))) {
                 //decrease iteration count by medium amount
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is greater than five fourths targetGoalMaximum by " + ((targetGoalMaximum + (targetGoalMaximum/4))-elapsedTime)
+                    + " took " + elapsedTime + "ms which is greater than five fourths targetGoalMaximum by " + ((targetGoalMaximum + (targetGoalMaximum/4))-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
                 keyIterationPrevious = keyIterationCurrent;
                 keyIterationCurrent -= keyMediumIterationIncrement;
             } else if (elapsedTime > targetGoalMaximum) {
                 //decrease iteration count by smaller amount
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is greater than the targetGoalMaximum by " + (targetGoalMaximum-elapsedTime)
+                    + " took " + elapsedTime + "ms which is greater than the targetGoalMaximum by " + (targetGoalMaximum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
                 keyIterationPrevious = keyIterationCurrent;
                 keyIterationCurrent -= keySmallIterationIncrement;
             } else {
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is between the targetGoalMinimum of " + targetGoalMinimum
+                    + " took " + elapsedTime + "ms which is between the targetGoalMinimum of " + targetGoalMinimum
                     + "ms and the targetGoalMaximum of " + targetGoalMaximum
-                    + "taking a total search time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+                    + "ms taking a total search time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
 
                 //Output key
                 //http://stackoverflow.com/a/7176483
