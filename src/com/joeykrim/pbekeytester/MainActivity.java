@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
     //int currentIterationCount = 0;
     int keyIterationLocationStart = 10000;
     int keySmallIterationIncrement = keyIterationLocationStart/2; //5000
+    int keyMediumIterationIncrement = keyIterationLocationStart; //20000
     int keyLargeIterationIncrement = keyIterationLocationStart*2; //20000
     int keyIterationCurrent = keyIterationLocationStart;
     int currentIteration = 1;
@@ -79,23 +80,40 @@ public class MainActivity extends Activity {
             if ((currentIteration == 1 || currentIteration == 2) && elapsedTime < (targetGoalMinimum/2)) {
                 //increase iteration count by larger increment
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is less than half the targetGoalMinimum by " + ((400L/2L)-elapsedTime)
+                    + " took " + elapsedTime + " which is less than half the targetGoalMinimum by " + ((targetGoalMinimum/2)-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
-				keyIterationCurrent += keyLargeIterationIncrement;
+		keyIterationCurrent += keyLargeIterationIncrement;
+            } else if (elapsedTime < ((targetGoalMinimum/4)*3)) {
+                //increase iteration count by larger increment
+                Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
+                    + " took " + elapsedTime + " which is less than three fourths the targetGoalMinimum by " + (((targetGoalMinimum/4)*3)-elapsedTime)
+                    + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+		keyIterationCurrent += keyMediumIterationIncrement;
             } else if (elapsedTime < targetGoalMinimum) {
                 //increase iteration count by smaller increment
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
-				keyIterationCurrent += keySmallIterationIncrement;
+		keyIterationCurrent += keySmallIterationIncrement;
+            } else if (elapsedTime > (targetGoalMaximum*2)) {
+                //decrease iteration count
+                Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
+                    + " took " + elapsedTime + " which is greater than the targetGoalMaximum by " + (targetGoalMaximum*2-elapsedTime)
+                    + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+                keyIterationCurrent -= keyLargeIterationIncrement;
+            } else if (elapsedTime > (targetGoalMaximum + (targetGoalMaximum/4))) {
+                //decrease iteration count
+                Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
+                    + " took " + elapsedTime + " which is greater than five fourths targetGoalMaximum by " + ((targetGoalMaximum + (targetGoalMaximum/4))-elapsedTime)
+                    + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+                keyIterationCurrent -= keyLargeIterationIncrement;
             } else if (elapsedTime > targetGoalMaximum) {
                 //decrease iteration count
-			    Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
+                Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is greater than the targetGoalMaximum by " + (targetGoalMaximum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
-				keyIterationCurrent -= keySmallIterationIncrement;
+                keyIterationCurrent -= keySmallIterationIncrement;
             } else {
-            	
             //if (elapsedTime > goalTime) {
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is between the targetGoalMinimum of " + targetGoalMinimum
@@ -123,7 +141,7 @@ public class MainActivity extends Activity {
                 //if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
                 //else iterationStep = 700;
             }
-			currentIteration++;
+            currentIteration++;
         }
     }
 
