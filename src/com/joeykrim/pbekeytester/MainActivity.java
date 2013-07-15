@@ -31,8 +31,8 @@ public class MainActivity extends Activity {
     
     //use range for goal time
     //target 500ms using range +-20%
-    targetGoalMinimum = goalTime*0.8;
-    targetGoalMaximum = goalTime*1.2;
+    long targetGoalMinimum = 450L;//goalTime*(long)0.8;
+    long targetGoalMaximum = 550L;//goalTime*(long)1.2;
 
     //set iteration increment step
     //int iterationStep = 100; //need to determine best increment step
@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
     //initialize iteration starting point
     //int currentIterationCount = 0;
     int keyIterationLocationStart = 10000;
-    int keySmallIterationsIncrement = keyIterationLocationStart/2; //5000
+    int keySmallIterationIncrement = keyIterationLocationStart/2; //5000
     int keyLargeIterationIncrement = keyIterationLocationStart*2; //20000
     int keyIterationCurrent = keyIterationLocationStart;
     int currentIteration = 0;
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
             //int startTime = System.currentTimeMillis();
             long startTime = SystemClock.elapsedRealtime();
 
-            SecretKey sk = generateKey(passphrase, generateSalt(), iterationCurrent, algorithName);
+            SecretKey sk = generateKey(passphrase, generateSalt(), keyIterationCurrent, algorithName);
 
             //int finishTime = System.currentTimeMillis();
             long finishTime = SystemClock.elapsedRealtime();
@@ -80,25 +80,25 @@ public class MainActivity extends Activity {
                 && elapsedTime < (targetGoalMinimum/2)) {
                 //increase iteration count by larger increment
                 keyIterationCurrent += keyLargeIterationIncrement;
-                Log.d(LOG_TAG, "Iteration count " + iterationCount + " at Key Iterations of " + keyIterationCurrent
+                Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
             } else if (elapsedTime < (targetGoalMinimum)) {
                 //increase iteration count by smaller increment
             	keyIterationCurrent += keySmallIterationIncrement;
-                Log.d(LOG_TAG, "Iteration count " + iterationCount + " at Key Iterations of " + keyIterationCurrent
+                Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
-            } else if (elapsedTime > targetGoalMaximum)
+            } else if (elapsedTime > targetGoalMaximum) {
                 //decrease iteration count
-                iterationCurrent -= smallIterationIncrement;
-                Log.d(LOG_TAG, "Iteration count " + iterationCount + " at Key Iterations of " + keyIterationCurrent
+                keyIterationCurrent -= keySmallIterationIncrement;
+			    Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is greater than the targetGoalMaximum by " + (targetGoalMaximum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
             } else {
             	
             //if (elapsedTime > goalTime) {
-                Log.d(LOG_TAG, "Iteration count " + iterationCount + " at Key Iterations of " + keyIterationCurrent
+                Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is between the targetGoalMinimum of " + targetGoalMinimum
                     + "ms and the targetGoalMaximum of " + targetGoalMaximum
                     + "taking a total search time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
@@ -124,6 +124,7 @@ public class MainActivity extends Activity {
                 //if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
                 //else iterationStep = 700;
             }
+			currentIteration += currentIteration;
         }
     }
 
