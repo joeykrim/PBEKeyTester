@@ -28,12 +28,22 @@ public class MainActivity extends Activity {
 
     //set goal time in ms
     long goalTime = 500L;
+    
+    //use range for goal time
+    //target 500ms using range +-20%
+    targetGoalMinimum = goalTime*0.8;
+    targetGoalMaximum = goalTime*1.2;
 
     //set iteration increment step
-    int iterationStep = 100; //need to determine best increment step
+    //int iterationStep = 100; //need to determine best increment step
 
     //initialize iteration starting point
-    int currentIterationCount = 0;
+    //int currentIterationCount = 0;
+    int keyIterationLocationStart = 10000;
+    int keySmallIterationsIncrement = keyIterationLocationStart/2; //5000
+    int keyLargeIterationIncrement = keyIterationLocationStart*2; //20000
+    int keyIterationCurrent = keyIterationLocationStart;
+    int currentIteration = 0;
 
     /** Called when the activity is first created. */
     @Override
@@ -54,40 +64,65 @@ public class MainActivity extends Activity {
         long overallStartTime = SystemClock.elapsedRealtime();
 
         while(true) {
-            currentIterationCount += iterationStep;
+            //currentIterationCount += iterationStep;
 
             //int startTime = System.currentTimeMillis();
             long startTime = SystemClock.elapsedRealtime();
 
-            SecretKey sk = generateKey(passphrase, generateSalt(), currentIterationCount, algorithName);
+            SecretKey sk = generateKey(passphrase, generateSalt(), iterationCurrent, algorithName);
 
             //int finishTime = System.currentTimeMillis();
             long finishTime = SystemClock.elapsedRealtime();
 
             long elapsedTime = finishTime-startTime;
 
-            if (elapsedTime > goalTime) {
-                Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount
-                    + " exceeds the goalTime of: " + goalTime + "ms by " + elapsedTime + "ms");
-                Log.d(LOG_TAG, "The previous iteration count was: "
-                    + (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
+            if (currentIteration == 1 || currentIteration == 2
+                && elapsedTime < (targetGoalMinimum/2)) {
+                //increase iteration count by larger increment
+                keyIterationCurrent += keyLargeIterationIncrement;
+                Log.d(LOG_TAG, "Iteration count " + iterationCount + " at Key Iterations of " + keyIterationCurrent
+                    + " took " + elapsedTime + " which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
+                    + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+            } else if (elapsedTime < (targetGoalMinimum)) {
+                //increase iteration count by smaller increment
+            	keyIterationCurrent += keySmallIterationIncrement;
+                Log.d(LOG_TAG, "Iteration count " + iterationCount + " at Key Iterations of " + keyIterationCurrent
+                    + " took " + elapsedTime + " which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
+                    + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+            } else if (elapsedTime > targetGoalMaximum)
+                //decrease iteration count
+                iterationCurrent -= smallIterationIncrement;
+                Log.d(LOG_TAG, "Iteration count " + iterationCount + " at Key Iterations of " + keyIterationCurrent
+                    + " took " + elapsedTime + " which is greater than the targetGoalMaximum by " + (targetGoalMaximum-elapsedTime)
+                    + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+            } else {
+            	
+            //if (elapsedTime > goalTime) {
+                Log.d(LOG_TAG, "Iteration count " + iterationCount + " at Key Iterations of " + keyIterationCurrent
+                    + " took " + elapsedTime + " which is between the targetGoalMinimum of " + targetGoalMinimum
+                    + "ms and the targetGoalMaximum of " + targetGoalMaximum
+                    + "taking a total search time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+                //Log.d(LOG_TAG, "The previous iteration count was: "
+                    //+ (currentIterationCount - iterationStep) + " and took: " + previousIterationElapsedTime + "ms that is under the goalTime of " + goalTime + " by " + (goalTime-previousIterationElapsedTime) + "ms");
 
                 //Output key
                 //http://stackoverflow.com/a/7176483
                 Log.d(LOG_TAG, "Final SecretKey: " + new BigInteger(1, sk.getEncoded()).toString(16));
 
                 results.add(finishTime - overallStartTime); //overall time consumed
-                results.add( (long) currentIterationCount); //targetIterationCount
+                results.add( (long) keyIterationCurrent); //targetIterationCount
                 results.add(elapsedTime); //targetIterationTime
-                results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
-                results.add(previousIterationElapsedTime); //previousIterationTime
+                results.add(0L);
+                results.add(0L);
+                //results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
+                //results.add(previousIterationElapsedTime); //previousIterationTime
                 //break;
                 return results;
-            } else {
-                Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-elapsedTime) + "ms more to reach the goalTime of: " + goalTime + "ms");
-                previousIterationElapsedTime = elapsedTime;
-                if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
-                else iterationStep = 700;
+            //} else {
+                //Log.d(LOG_TAG, "Current iteration count of " + currentIterationCount + " took " + (finishTime-startTime) + "ms and has " + (goalTime-elapsedTime) + "ms more to reach the goalTime of: " + goalTime + "ms");
+                //previousIterationElapsedTime = elapsedTime;
+                //if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
+                //else iterationStep = 700;
             }
         }
     }
