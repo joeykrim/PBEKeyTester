@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
     int keySmallIterationIncrement = keyIterationLocationStart/2; //5000
     int keyLargeIterationIncrement = keyIterationLocationStart*2; //20000
     int keyIterationCurrent = keyIterationLocationStart;
-    int currentIteration = 0;
+    int currentIteration = 1;
 
     /** Called when the activity is first created. */
     @Override
@@ -76,25 +76,24 @@ public class MainActivity extends Activity {
 
             long elapsedTime = finishTime-startTime;
 
-            if (currentIteration == 1 || currentIteration == 2
-                && elapsedTime < (targetGoalMinimum/2)) {
+            if ((currentIteration == 1 || currentIteration == 2) && elapsedTime < (targetGoalMinimum/2)) {
                 //increase iteration count by larger increment
-                keyIterationCurrent += keyLargeIterationIncrement;
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-                    + " took " + elapsedTime + " which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
+                    + " took " + elapsedTime + " which is less than half the targetGoalMinimum by " + ((400L/2L)-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
-            } else if (elapsedTime < (targetGoalMinimum)) {
+				keyIterationCurrent += keyLargeIterationIncrement;
+            } else if (elapsedTime < targetGoalMinimum) {
                 //increase iteration count by smaller increment
-            	keyIterationCurrent += keySmallIterationIncrement;
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+				keyIterationCurrent += keySmallIterationIncrement;
             } else if (elapsedTime > targetGoalMaximum) {
                 //decrease iteration count
-                keyIterationCurrent -= keySmallIterationIncrement;
 			    Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + " which is greater than the targetGoalMaximum by " + (targetGoalMaximum-elapsedTime)
                     + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+				keyIterationCurrent -= keySmallIterationIncrement;
             } else {
             	
             //if (elapsedTime > goalTime) {
@@ -124,7 +123,7 @@ public class MainActivity extends Activity {
                 //if (elapsedTime < ((goalTime/4)*3)) iterationStep *= 2;
                 //else iterationStep = 700;
             }
-			currentIteration += currentIteration;
+			currentIteration++;
         }
     }
 
