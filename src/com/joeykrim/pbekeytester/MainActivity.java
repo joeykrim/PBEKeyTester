@@ -28,8 +28,8 @@ public class MainActivity extends Activity {
     
     //use range for goal time
     //target 500ms using range +-20%
-    long targetGoalMinimum = goalTime*(long)0.8;//450L;
-    long targetGoalMaximum = goalTime*(long)1.2;//550L;
+    long targetGoalMinimum = 450L;//goalTime*(long)0.8;
+    long targetGoalMaximum = 550L;//goalTime*(long)1.2;
 
     //initialize iteration starting point and increment ranges
     int keyIterationLocationStart = 10000;
