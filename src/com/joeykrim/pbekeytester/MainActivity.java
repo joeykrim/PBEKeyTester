@@ -63,6 +63,8 @@ public class MainActivity extends Activity {
         ArrayList<Long> results = new ArrayList<Long>();
 
         long overallStartTime = SystemClock.elapsedRealtime();
+        long elapsedTimePrevious = 0L;
+        int keyIterationPrevious = 0;
 
         while(true) {
             //currentIterationCount += iterationStep;
@@ -129,8 +131,8 @@ public class MainActivity extends Activity {
                 results.add(finishTime - overallStartTime); //overall time consumed
                 results.add( (long) keyIterationCurrent); //targetIterationCount
                 results.add(elapsedTime); //targetIterationTime
-                results.add(0L);
-                results.add(0L);
+                results.add( (long) keyIterationPrevious);
+                results.add(elapsedTimePrevious);
                 //results.add( (long) currentIterationCount - iterationStep); //previousIterationCount
                 //results.add(previousIterationElapsedTime); //previousIterationTime
                 //break;
@@ -142,6 +144,8 @@ public class MainActivity extends Activity {
                 //else iterationStep = 700;
             }
             currentIteration++;
+            elapsedTimePrevious = elapsedTime;
+            keyIterationPrevious = keyIterationCurrent;
         }
     }
 
