@@ -192,7 +192,7 @@ public class MainActivity extends Activity {
 				Log.d(LOG_TAG, "Final SecretKey: " + new BigInteger(1, sk.getEncoded()).toString(16));
 
 				results.add(finishTime - overallStartTime); //overall time consumed
-				results.add(currentIteration); //overall iterations required
+				results.add( (long) currentIteration); //overall iterations required
 				results.add( (long) keyIterationCurrent); //targetIterationCount
 				results.add(elapsedTime); //targetIterationTime
 				results.add( (long) keyIterationPrevious);
