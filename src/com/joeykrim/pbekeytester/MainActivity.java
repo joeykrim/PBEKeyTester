@@ -28,8 +28,8 @@ public class MainActivity extends Activity {
     
     //use range for goal time
     //target 500ms using range +-10%
-    long targetGoalMinimum = (long) (goalTime*0.9);//450L;
-    long targetGoalMaximum = (long) (goalTime*1.1);//550L;
+    long targetGoalMinimum = (long) (goalTime*0.8);//400L;
+    long targetGoalMaximum = (long) (goalTime*1.2);//600L;
 
     //initialize iteration starting point and increment ranges
     int keyIterationLocationStart = 10000;
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 
             long elapsedTime = finishTime-startTime;
 
-            if ((currentIteration == 1 || currentIteration == 2) && elapsedTime < (targetGoalMinimum/2)) {
+            /*if ((currentIteration == 1 || currentIteration == 2) && elapsedTime < (targetGoalMinimum/2)) {
                 //increase iteration count by larger increment
                 Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
                     + " took " + elapsedTime + "ms which is less than half the targetGoalMinimum by " + ((targetGoalMinimum/2)-elapsedTime)
@@ -133,6 +133,93 @@ public class MainActivity extends Activity {
             }
             currentIteration++;
             elapsedTimePrevious = elapsedTime;
+			*/
+			//initialize iteration starting point and increment ranges
+			int keyIterationLocationStart = 10000;
+			//int keyIterationEighthStep = keyIterationLocationStart/8; //1250
+			int keyIterationQuarterStep = keyIterationLocationStart/4; //2500
+			int keyIterationHalfStep = keyIterationLocationStart/2; //5000
+			int keyIterationFullStep = keyIterationLocationStart; //10000
+			int keyIterationDoubleStep = keyIterationLocationStart*2; //20000
+			int keyIterationQuadrupleStep = keyIterationLocationStart*4; //40000
+			int keyIterationOctupleStep = keyIterationLocationStart*8; //80000
+			
+			//fractions can be reduced but are keeping the denominator the same for readability
+			Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
+				  + " took " + elapsedTime + "ms which is less than the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
+				  + "ms taking overall time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+			if (elapsedTime < (targetGoalMinimum*2/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent += keyIterationOctupleStep;
+				Log.d(LOG_TAG, "Increment octuple step: " + keyIterationOctupleStep);
+			} else if (elapsedTime < (targetGoalMinimum*3/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent += keyIterationQuadrupleStep;
+				Log.d(LOG_TAG, "Increment quadruple step: " + keyIterationQuadrupleStep);
+			} else if (elapsedTime < (targetGoalMinimum*4/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent += keyIterationDoubleStep;
+				Log.d(LOG_TAG, "Increment double step: " + keyIterationDoubleStep);
+			} else if (elapsedTime < (targetGoalMinimum*5/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent += keyIterationFullStep;
+				Log.d(LOG_TAG, "Increment full step: " + keyIterationFullStep);
+			} else if (elapsedTime < (targetGoalMinimum*6/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent += keyIterationHalfStep;
+				Log.d(LOG_TAG, "Increment half step: " + keyIterationHalfStep);
+			} else if (elapsedTime < (targetGoalMinimum*7/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent += keyIterationQuarterStep;
+				Log.d(LOG_TAG, "Increment quarter step: " + keyIterationQuarterStep);
+			} else if (elapsedTime < targetGoalMinimum) {
+				keyIterationPrevious = keyIterationCurrent;
+				//keyIterationCurrent += keyIterationEighthStep;
+				//Log.d(LOG_TAG, "Increment eighth step: " + keyIterationEighthStep);
+				keyIterationCurrent += keyIterationQuarterStep;
+				Log.d(LOG_TAG, "Increment prev eighth now quarter step: " + keyIterationQuarterStep);
+			} else if (elapsedTime >= targetGoalMinimum && elapsedTime <= targetGoalMaximum || SystemClock.elapsedRealtime()-overallStartTime > 10000) {
+				Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
+					  + " took " + elapsedTime + "ms which is between the targetGoalMinimum of " + targetGoalMinimum
+					  + "ms and the targetGoalMaximum of " + targetGoalMaximum
+					  + "ms taking a total search time of " + (SystemClock.elapsedRealtime()-overallStartTime) + "ms");
+
+				//Output key
+				//http://stackoverflow.com/a/7176483
+				Log.d(LOG_TAG, "Final SecretKey: " + new BigInteger(1, sk.getEncoded()).toString(16));
+
+				results.add(finishTime - overallStartTime); //overall time consumed
+				results.add( (long) keyIterationCurrent); //targetIterationCount
+				results.add(elapsedTime); //targetIterationTime
+				results.add( (long) keyIterationPrevious);
+				results.add(elapsedTimePrevious);
+				return results;
+			} else if (elapsedTime < (targetGoalMaximum*9/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				//keyIterationCurrent -= keyIterationEighthStep;
+				keyIterationCurrent -= keyIterationQuarterStep;
+			} else if (elapsedTime < (targetGoalMaximum*10/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent -= keyIterationQuarterStep;
+			} else if (elapsedTime < (targetGoalMaximum*11/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent -= keyIterationHalfStep;
+			} else if (elapsedTime < (targetGoalMaximum*12/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent -= keyIterationFullStep;
+			} else if (elapsedTime < (targetGoalMaximum*13/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent -= keyIterationDoubleStep;
+			} else if (elapsedTime < (targetGoalMaximum*14/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent -= keyIterationQuadrupleStep;
+			} else if (elapsedTime < (targetGoalMaximum*15/8)) {
+				keyIterationPrevious = keyIterationCurrent;
+				keyIterationCurrent -= keyIterationOctupleStep;
+			}
+			currentIteration++;
+			elapsedTimePrevious = elapsedTime;
+			
         }
     }
 
