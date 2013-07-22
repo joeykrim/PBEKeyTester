@@ -148,7 +148,8 @@ public class MainActivity extends Activity {
 				  + "ms taking overall time of " + overallTime + "ms");
 			} else {
 				Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
-				  + " took " + elapsedTime + "ms which varies against the targetGoalMaximum by " + (elapsedTime-targetGoalMaximum) + "ms taking overall time of				
+				  + " took " + elapsedTime + "ms which varies against the targetGoalMaximum by " + (elapsedTime-targetGoalMaximum)
+				  + "ms taking overall time of " + overallTime + "ms");			
 			}
 			if (elapsedTime < (targetGoalMinimum*2/8)) {
 				keyIterationPrevious = keyIterationCurrent;
