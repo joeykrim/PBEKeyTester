@@ -142,9 +142,14 @@ public class MainActivity extends Activity {
 			*/
 			
 			//fractions can be reduced but are keeping the denominator the same for readability
-			Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
+			if ((targetGoalMinimum-elapsedTime) > 0) {
+				Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
 				  + " took " + elapsedTime + "ms which varies against the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
-				  + "ms and the targetGoalMaximum by " + (targetGoalMaximum-elapsedTime) + "ms taking overall time of " + overallTime + "ms");
+				  + "ms taking overall time of " + overallTime + "ms");
+			} else {
+				Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
+				  + " took " + elapsedTime + "ms which varies against the targetGoalMaximum by " + (elapsedTime-targetGoalMaximum) + "ms taking overall time of				
+			}
 			if (elapsedTime < (targetGoalMinimum*2/8)) {
 				keyIterationPrevious = keyIterationCurrent;
 				keyIterationCurrent += keyIterationOctupleStep;
