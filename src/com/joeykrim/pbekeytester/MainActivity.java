@@ -144,7 +144,7 @@ public class MainActivity extends Activity {
 			//fractions can be reduced but are keeping the denominator the same for readability
 			Log.d(LOG_TAG, "Iteration count " + currentIteration + " at Key Iterations of " + keyIterationCurrent
 				  + " took " + elapsedTime + "ms which varies against the targetGoalMinimum by " + (targetGoalMinimum-elapsedTime)
-				  + "ms taking overall time of " + overallTime + "ms");
+				  + "ms and the targetGoalMaximum by " + (targetGoalMaximum-elapsedTime) + "ms taking overall time of " + overallTime + "ms");
 			if (elapsedTime < (targetGoalMinimum*2/8)) {
 				keyIterationPrevious = keyIterationCurrent;
 				keyIterationCurrent += keyIterationOctupleStep;
@@ -202,38 +202,42 @@ public class MainActivity extends Activity {
 				keyIterationPrevious = keyIterationCurrent;
 				//keyIterationCurrent -= keyIterationEighthStep;
 				keyIterationCurrent -= keyIterationQuarterStep;
-                Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*9/8: " + (targetGoalMaximum*9/8));
-                Log.d(LOG_TAG, "Decrement prev eighth now quarter step: " + keyIterationQuarterStep);
+                		Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*9/8: " + (targetGoalMaximum*9/8));
+                		Log.d(LOG_TAG, "Decrement prev eighth now quarter step: " + keyIterationQuarterStep);
 			} else if (elapsedTime < (targetGoalMaximum*10/8)) {
 				keyIterationPrevious = keyIterationCurrent;
 				keyIterationCurrent -= keyIterationQuarterStep;
-                Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*10/8: " + (targetGoalMaximum*10/8));
+        			Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*10/8: " + (targetGoalMaximum*10/8));
 				Log.d(LOG_TAG, "Decrement quarter step: " + keyIterationQuarterStep);
 			} else if (elapsedTime < (targetGoalMaximum*11/8)) {
 				keyIterationPrevious = keyIterationCurrent;
 				keyIterationCurrent -= keyIterationHalfStep;
-                Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*11/8: " + (targetGoalMaximum*11/8));
+                		Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*11/8: " + (targetGoalMaximum*11/8));
 				Log.d(LOG_TAG, "Decrement half step: " + keyIterationHalfStep);
 			} else if (elapsedTime < (targetGoalMaximum*12/8)) {
 				keyIterationPrevious = keyIterationCurrent;
 				keyIterationCurrent -= keyIterationFullStep;
-                Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*12/8: " + (targetGoalMaximum*12/8));
+                		Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*12/8: " + (targetGoalMaximum*12/8));
 				Log.d(LOG_TAG, "Decrement full step: " + keyIterationFullStep);
 			} else if (elapsedTime < (targetGoalMaximum*13/8)) {
 				keyIterationPrevious = keyIterationCurrent;
 				keyIterationCurrent -= keyIterationDoubleStep;
-                Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*13/8: " + (targetGoalMaximum*13/8));
+                		Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*13/8: " + (targetGoalMaximum*13/8));
 				Log.d(LOG_TAG, "Decrement double step: " + keyIterationDoubleStep);
 			} else if (elapsedTime < (targetGoalMaximum*14/8)) {
 				keyIterationPrevious = keyIterationCurrent;
 				keyIterationCurrent -= keyIterationQuadrupleStep;
-                Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*14/8: " + (targetGoalMaximum*14/8));
+                		Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*14/8: " + (targetGoalMaximum*14/8));
 				Log.d(LOG_TAG, "Decrement quadruple step: " + keyIterationQuadrupleStep);
 			} else if (elapsedTime < (targetGoalMaximum*15/8)) {
 				keyIterationPrevious = keyIterationCurrent;
 				keyIterationCurrent -= keyIterationOctupleStep;
-                Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*15/8: " + (targetGoalMaximum*15/8));
+                		Log.d(LOG_TAG, "Elapsed time: " + elapsedTime + "ms is < targetGoalMaximum*15/8: " + (targetGoalMaximum*15/8));
 				Log.d(LOG_TAG, "Decrement octuple step: " + keyIterationOctupleStep);
+			}
+			if (keyIterationCurrent < keyIterationLocationStart) {
+				keyIterationCurrent = keyIterationLocationStart;
+				Log.d(LOG_TAG, "key iteration count was lowered than start location. resetting to start location.");
 			}
 			currentIteration++;
 			elapsedTimePrevious = elapsedTime;
