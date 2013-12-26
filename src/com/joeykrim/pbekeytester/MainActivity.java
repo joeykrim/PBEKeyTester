@@ -60,15 +60,15 @@ public class MainActivity extends Activity {
         results.add((long) keyIterationBaseline); //baseline key iterations
         results.add((long) iterationsPerMS); //iterations per millisecond
 
-        int scaledTargetIerations = (int) iterationsPerMS * 500;
+        int scaledTargetIterations = (int) iterationsPerMS * 500;
 
         results.add((long) scaledTargetIterations); //scaled target iteration count
 
-        long startTime = SystemClock.elapsedRealtime();
+        startTime = SystemClock.elapsedRealtime();
 
-        SecretKey sk = generateKey(passphrase, generateSalt(), scaledTargetIterations, algorithName);
+        sk = generateKey(passphrase, generateSalt(), scaledTargetIterations, algorithName);
 
-        long finishTime = SystemClock.elapsedRealtime();
+        finishTime = SystemClock.elapsedRealtime();
 
         results.add((long) finishTime-startTime); //scaled elapsed time
         return results;
