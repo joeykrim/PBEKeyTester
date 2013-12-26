@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         results.add(elapsedTime); //overall time consumed
         results.add((long) keyIterationBaseline); //baseline key iterations
         results.add((long) keyIterationBaseline / elapsedTime); //iterations per millisecond
-
+        return results;
     }
 
 
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
                     + " with passphrase: " + passphrase + System.getProperty("line.separator")
                     + System.getProperty("line.separator") + "Overall time required: " + results.get(0) + "ms"
                     + System.getProperty("line.separator") + " for " + results.get(1) + " iterations."
-                    + System.getProperty("line.separator") + "Iterations per millisecond: " + results.get(2);
+                    + System.getProperty("line.separator") + "Iterations per millisecond: " + results.get(2));
             }
         }
     }

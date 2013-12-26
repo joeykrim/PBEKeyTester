@@ -13,7 +13,7 @@ import java.util.*;
 import android.support.v4.util.*;
 import java.math.*;
 
-public class MainActivity extends Activity {
+public class MainActivityTiming extends Activity {
 
     String LOG_TAG = "TestIterations";
 	
