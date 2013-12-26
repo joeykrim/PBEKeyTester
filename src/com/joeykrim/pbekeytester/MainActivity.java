@@ -15,7 +15,8 @@ import java.math.*;
 
 public class MainActivity extends Activity {
 
-    String LOG_TAG = "TestIterations";
+    private static final String LOG_TAG = MainActivity.class.getName();
+    //String LOG_TAG = "TestIterations";
 	
     //set algorithm name
     String algorithName = "PBEWITHSHA1AND128BITAES-CBC-BC";
