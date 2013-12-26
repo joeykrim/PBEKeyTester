@@ -62,6 +62,8 @@ public class MainActivity extends Activity {
 
         int scaledTargetIterations = (int) iterationsPerMS * 500;
 
+        if (scaledTargetIerations < 100) scaledTargetIterations = 100; //low-end device default
+
         results.add((long) scaledTargetIterations); //scaled target iteration count
 
         startTime = SystemClock.elapsedRealtime();
@@ -71,6 +73,7 @@ public class MainActivity extends Activity {
         finishTime = SystemClock.elapsedRealtime();
 
         results.add((long) finishTime-startTime); //scaled elapsed time
+
         return results;
     }
 
