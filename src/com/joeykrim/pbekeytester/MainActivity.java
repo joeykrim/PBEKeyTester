@@ -49,16 +49,28 @@ public class MainActivity extends Activity {
 
         SecretKey sk = generateKey(passphrase, generateSalt(), keyIterationBaseline, algorithName);
 
-        //int finishTime = System.currentTimeMillis();
         long finishTime = SystemClock.elapsedRealtime();
 
         long elapsedTime = finishTime - startTime;
-        
-        Log.d(LOG_TAG, "Iterations per millisecond: " + keyIterationBaseline / elapsedTime);
+
+        int iterationsPerMS = (int) (keyIterationBaseline / elapsedTime);
+        Log.d(LOG_TAG, "Iterations per millisecond: " + iterationsPerMS);
 
         results.add(elapsedTime); //overall time consumed
         results.add((long) keyIterationBaseline); //baseline key iterations
-        results.add((long) keyIterationBaseline / elapsedTime); //iterations per millisecond
+        results.add((long) iterationsPerMS); //iterations per millisecond
+
+        int scaledTargetIerations = (int) iterationsPerMS * 500;
+
+        results.add((long) scaledTargetIterations); //scaled target iteration count
+
+        long startTime = SystemClock.elapsedRealtime();
+
+        SecretKey sk = generateKey(passphrase, generateSalt(), scaledTargetIterations, algorithName);
+
+        long finishTime = SystemClock.elapsedRealtime();
+
+        results.add((long) finishTime-startTime); //scaled elapsed time
         return results;
     }
 
@@ -103,7 +115,9 @@ public class MainActivity extends Activity {
                     + " with passphrase: " + passphrase + System.getProperty("line.separator")
                     + System.getProperty("line.separator") + "Overall time required: " + results.get(0) + "ms"
                     + System.getProperty("line.separator") + " for " + results.get(1) + " iterations."
-                    + System.getProperty("line.separator") + "Iterations per millisecond: " + results.get(2));
+                    + System.getProperty("line.separator") + "Iterations per millisecond: " + results.get(2)
+                    + System.getProperty("line.separator") + "Scaled iteration count: " + results.get(3)
+                    + System.getProperty("line.separator") + "Scaled elapsed time: " + results.get(4));
             }
         }
     }
